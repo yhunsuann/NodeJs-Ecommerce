@@ -1,0 +1,92 @@
+generator client {
+   provider = "prisma-client-js"
+   output   = "./src/generated/client"
+}
+
+datasource db {
+provider = "mysql"
+url      = env("DATABASE_URL")
+}
+
+model user {
+    id Int  @id @default(autoincrement())
+    name String
+    email String @unique
+    password String
+    phone String?
+    address String? 
+    id_country Int
+    avatar String? 
+    level Int @default(1)
+    country country @relation(fields: [id_country], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    comment comment[]
+    blog blog[]
+    product product[]
+}
+
+model blog {
+    id Int @id @default(autoincrement())
+    title String
+    image String
+    description String? @db.Text
+    content String? @db.Text 
+    comment comment[]
+    user_id Int
+    user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model country {
+    id Int @id @default(autoincrement())
+    name String
+    user  user[]
+}
+
+model comment {
+    id Int @id @default(autoincrement()) 
+    user_name String
+    content String
+    level Int
+    image_user String
+    created_at  DateTime @default(now())
+    updated_at  DateTime? @updatedAt
+    blog_id Int 
+    user_id Int
+    user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    blog blog @relation(fields: [blog_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model category {
+    id Int @id @default(autoincrement()) 
+    name String
+    product product[]
+}
+
+model brand {
+    id Int @id @default(autoincrement()) 
+    name String
+    product product[]
+}
+
+model product{
+    id Int @id @default(autoincrement()) 
+    category_id Int
+    brand_id Int 
+    user_id Int 
+    name String 
+    image String 
+    web_id String?
+    price Int 
+    status Int @default(0)
+    sale Int? 
+    condition String?
+    qty Int? @default(0)
+    detail String @db.Text
+    company_profile String
+    highlight Int @default(0)
+    active Int @default(0)
+    created_at DateTime @default(now())
+    update_at DateTime @updatedAt
+    category category @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    brand brand @relation(fields: [brand_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    user user @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}

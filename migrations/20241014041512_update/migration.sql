@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE `comment` ADD COLUMN `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `image_user` VARCHAR(191) NULL,
+    ADD COLUMN `level` INTEGER NULL,
+    ADD COLUMN `updated_at` DATETIME(3) NULL,
+    ADD COLUMN `user_name` VARCHAR(191) NULL;
